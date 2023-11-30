@@ -1,4 +1,4 @@
-TARGET_EXEC ?= ctest
+TARGET_EXEC ?= testing
 
 CC=clang
 
