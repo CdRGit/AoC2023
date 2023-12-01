@@ -1,5 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
+#include <assert.h>
+
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <stdint.h>
 uint8_t* read_data(const char* const fileName) {
@@ -38,6 +47,7 @@ int main(int argc, const char** argv) {
 	part_2(test_input, test_data);
 
 	if (TRY_REAL_INPUT) {
+		printf("---\n");
 		uint8_t* real_data = read_data(real_input);
 		part_1(real_input, real_data);
 		part_2(real_input, real_data);
