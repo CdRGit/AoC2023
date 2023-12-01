@@ -90,25 +90,20 @@ const char* words[] = {
 	"nine"
 };
 
-uint8_t word_digit(const uint8_t* text_value, uint64_t* length) {
+uint8_t word_digit(const uint8_t* text_value) {
 	uint8_t c = *text_value;
-	*length = 0;
 	if (c == '\n' || c == '\0') {
-		if (c == '\n') *length = 1;
 		return 0;
 	}
 	if (c >= '0' && c <= '9') {
-		*length = 1;
 		return c - '0';
 	}
 	for (uint8_t i = 0; i < sizeof(words) / sizeof(words[0]); i++) {
 		int len = strlen(words[i]);
 		if (strncmp(words[i], (const char*)text_value, len) == 0) {
-			*length = 1;
 			return i + 1;
 		}
 	}
-	*length = 1;
 	return 255;
 }
 
@@ -119,15 +114,15 @@ void part_2(const char* path, const uint8_t* data) {
 		// 10 as sentinel value to ensure I only set `initial` once
 		uint64_t initial = 10;
 		uint64_t final = 0;
-		uint64_t length = 0;
 		uint8_t d = 0;
-		while ((d = word_digit(data, &length))) {
-			data += length;
+		while ((d = word_digit(data))) {
+			data++;
 			if (d == 255) continue;
 			if (initial == 10) initial = d;
 			final = d;
 		}
-		data += length;
+		if (*data)
+			data++;
 
 		sum += initial * 10 + final;
 	}
