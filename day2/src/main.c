@@ -5,6 +5,8 @@
 #include <string.h>
 #include <assert.h>
 
+#include <ctype.h>
+
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -32,10 +34,10 @@ uint8_t* read_data(const char* const fileName) {
 	return data;
 }
 
-const bool TRY_REAL_INPUT = false;
+const bool TRY_REAL_INPUT = true;
 
-const char test_input[] = "test_input/day1.txt";
-const char real_input[] = "real_input/day1.txt";
+const char test_input[] = "test_input/day2.txt";
+const char real_input[] = "real_input/day2.txt";
 
 void part_1(const char* path, const uint8_t* data);
 void part_2(const char* path, const uint8_t* data);
@@ -54,9 +56,111 @@ int main(int argc, const char** argv) {
 	}
 }
 
+const char* color_names[3] = {
+	"red",
+	"green",
+	"blue",
+};
+
 void part_1(const char* path, const uint8_t* data) {
+	// RGB order
+	uint64_t max_colors[3] = {
+		12, // red cubes
+		13, // green cubes
+		14, // blue cubes
+	};
 	printf("part 1: %s\n", path);
+	uint64_t id_sum = 0;
+	while (*data) {
+		uint64_t colors[3] = {
+			0,
+			0,
+			0,
+		};
+		// skip 'Game '
+		data += 5;
+		// read in ID
+		uint64_t id = 0;
+		while (isdigit(*data)) {
+			id *= 10;
+			id += *data - '0';
+			data++;
+		}
+		while (*data != '\n' && *data) {
+			data++; // skip ':' / ',' / ';'
+			data++; // skip ' '
+			uint64_t v = 0;
+			while (isdigit(*data)) {
+				v *= 10;
+				v += *data - '0';
+				data++;
+			}
+			data++;
+			for (int i = 0; i < sizeof(color_names) / sizeof(color_names[0]); i++) {
+				int len = strlen(color_names[i]);
+				if (strncmp(color_names[i], (const char*)data, len) == 0) {
+					data += len;
+					if (v > colors[i])
+						colors[i] = v;
+					break;
+				}
+			}
+		}
+		if (*data == '\n') data++;
+
+		bool ok = true;
+		for (int i = 0; i < sizeof(colors) / sizeof(colors[0]); i++) {
+			if (colors[i] > max_colors[i]) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok) id_sum += id;
+	}
+	printf("%lu\n", id_sum);
 }
+
 void part_2(const char* path, const uint8_t* data) {
+	// RGB order
 	printf("part 2: %s\n", path);
+	uint64_t pow_sum = 0;
+	while (*data) {
+		uint64_t colors[3] = {
+			0,
+			0,
+			0,
+		};
+		// skip 'Game '
+		data += 5;
+		// read in ID
+		uint64_t id = 0;
+		while (isdigit(*data)) {
+			id *= 10;
+			id += *data - '0';
+			data++;
+		}
+		while (*data != '\n' && *data) {
+			data++; // skip ':' / ',' / ';'
+			data++; // skip ' '
+			uint64_t v = 0;
+			while (isdigit(*data)) {
+				v *= 10;
+				v += *data - '0';
+				data++;
+			}
+			data++;
+			for (int i = 0; i < sizeof(color_names) / sizeof(color_names[0]); i++) {
+				int len = strlen(color_names[i]);
+				if (strncmp(color_names[i], (const char*)data, len) == 0) {
+					data += len;
+					if (v > colors[i])
+						colors[i] = v;
+					break;
+				}
+			}
+		}
+		if (*data == '\n') data++;
+		pow_sum += (colors[0] * colors[1] * colors[2]);
+	}
+	printf("%lu\n", pow_sum);
 }

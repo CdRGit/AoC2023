@@ -1,4 +1,4 @@
-TARGET_EXEC ?= day1
+TARGET_EXEC ?= day2
 
 CC=clang
 
