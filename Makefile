@@ -1,4 +1,4 @@
-CDIRS = testing day1
+CDIRS = testing day1 day2
 
 .PHONY : all release cproj $(CDIRS) clean
 
