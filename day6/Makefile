@@ -14,7 +14,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 DEBUG_CFLAGS=-g
 
-REL_CFLAGS=-O3 -flto=thin -pipe -funroll-loops
+REL_CFLAGS=-O3 -flto=thin -pipe
 
 .PHONY: all
 all: CFLAGS += $(DEBUG_CFLAGS)
