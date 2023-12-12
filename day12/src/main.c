@@ -1,3 +1,6 @@
+// show cache statistics at the end
+#define CACHE_ANALYSIS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -42,6 +45,11 @@ const char real_input[] = "real_input/day12.txt";
 void part_1(const char* path, const uint8_t* data);
 void part_2(const char* path, const uint8_t* data);
 
+#ifdef CACHE_ANALYSIS
+size_t cache_hits = 0;
+size_t cache_misses = 0;
+#endif
+
 int main(int argc, const char** argv) {
 	uint8_t* test_data = read_data(test_input);
 
@@ -54,6 +62,10 @@ int main(int argc, const char** argv) {
 		part_1(real_input, real_data);
 		part_2(real_input, real_data);
 	}
+
+#ifdef CACHE_ANALYSIS
+		printf("\ncache info:\n%zu hits, %zu misses\n", cache_hits, cache_misses);
+#endif
 }
 
 typedef enum {
@@ -109,8 +121,6 @@ void init_cache(record r) {
 }
 
 int64_t arrange(record r, size_t spring_idx, size_t count_idx) {
-	size_t in_s_idx = spring_idx;
-	size_t in_c_idx = count_idx;
 	// did we reach the end of r.counts? if so there's up to 1 arrangement, if the rest of the springs are all either damaged or unknown
 	if (r.count_cnt == count_idx) {
 		for (size_t i = spring_idx; i < r.spring_cnt; i++) {
@@ -129,8 +139,14 @@ int64_t arrange(record r, size_t spring_idx, size_t count_idx) {
 	size_t c_idx = spring_idx + count_idx * r.spring_cnt;
 	// hit up the cache
 	if (cache[c_idx] != -1) {
+#ifdef CACHE_ANALYSIS
+		cache_hits++;
+#endif
 		return cache[c_idx];
 	}
+#ifdef CACHE_ANALYSIS
+	cache_misses++;
+#endif
 
 	int64_t arrangements = 0;
 	// is this spring damaged? if so we recurse again and return that value instead
@@ -223,8 +239,7 @@ void part_1(const char* path, const uint8_t* data) {
 
 		// it's dynamic programming time
 		init_cache(current_line);
-		int64_t this_line = arrange(current_line, 0, 0);
-		arrangements += this_line;
+		arrangements += arrange(current_line, 0, 0);
 
 		free(current_line.springs);
 		free(current_line.counts);
@@ -285,8 +300,7 @@ void part_2(const char* path, const uint8_t* data) {
 
 		// it's dynamic programming time
 		init_cache(current_line);
-		int64_t this_line = arrange(current_line, 0, 0);
-		arrangements += this_line;
+		arrangements += arrange(current_line, 0, 0);
 
 		free(current_line.springs);
 		free(current_line.counts);
