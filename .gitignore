@@ -1,3 +1,4 @@
 build/
 target/
 real_input/
+*.dot
