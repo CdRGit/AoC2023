@@ -1,0 +1,13 @@
+broadcaster -> aa, ba
+%aa -> ab, ax
+%ab -> ac, ax
+%ac -> ax
+&ax -> xx, aa
+%ba -> bb
+%bb -> bc
+%bc -> bd
+%bd -> be
+%be -> bx
+&bx -> xy, ba
+&xx -> xy
+&xy -> rx
