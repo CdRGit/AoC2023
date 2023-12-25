@@ -1,0 +1,27 @@
+#!/bin/bash
+
+time ./day1/build/day1
+time ./day2/build/day2
+time ./day3/build/day3
+time ./day4/build/day4
+time ./day5/build/day5
+time ./day6/build/day6
+time ./day7/build/day7
+time ./day8/build/day8
+time ./day9/build/day9
+time ./day10/build/day10
+time ./day11/build/day11
+time ./day12/build/day12
+time ./day13/build/day13
+time ./day14/build/day14
+time ./day15/build/day15
+time ./day16/build/day16
+time ./day17/build/day17
+time ./day18/build/day18
+time ./day19/build/day19
+time ./day20/build/day20
+time ./day21/build/day21
+time ./day22/build/day22
+time ./day23/build/day23
+time ./day24/build/day24
+time ./day25/build/day25
